@@ -20,7 +20,8 @@ Project goals
 - Support for computers of many different types, for example small embedded PCs such as Raspberry PI.
 - Consider removing support for plugins, if it will make a faster more reliable browser.
 - Reconsider if Rust in Firefox is a good idea.
-- Wunderfox is maintained is a small altruistic open source project, it is not controlled by a search engine corporation like Google or Netscape.
+- Wunderfox is maintained as a small altruistic open source project, it is not controlled by a search engine corporation like Google or Netscape.
+- Academic project to teach web users and software developers about web browsers.
 
 
 Project status
