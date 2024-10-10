@@ -1,4 +1,4 @@
-Wunderfox - a web browser.
+Wunderfox - a secure and fast web browser.
 =========================
 
 Wunderfox is a fork of Firefox.  Wunderfox is secure and fast web browser. Wunderfox supports modern web standards such as HTML5. 
@@ -37,6 +37,7 @@ TODO
 ====
 - Compile Wunderfox on GitHub actions.
 - Builds for Linux and Windows.
+- Faster compilation, reduced code size.
 
 License
 =======
