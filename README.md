@@ -5,6 +5,8 @@ Wunderfox is a fork of Firefox.  Wunderfox is secure, fast and modern web browse
 
 Wunderfox is an open source project, with altruistic goals for making a good web browser. 
 
+![CI](https://github.com/wunderfox/wunderfox/actions/workflows/build-firefox.yml/badge.svg)
+
 Project goals
 =============
 - A fork of Firefox 131.
