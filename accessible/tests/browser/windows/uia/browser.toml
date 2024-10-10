@@ -1,0 +1,32 @@
+[DEFAULT]
+subsuite = "a11y"
+skip-if = [
+  "os != 'win'",
+  "headless",
+]
+support-files = [
+  "head.js",
+  "!/accessible/tests/mochitest/moz.png",
+]
+
+["browser_controlType.js"]
+
+["browser_elementFromPoint.js"]
+
+["browser_focus.js"]
+
+["browser_generalProps.js"]
+
+["browser_gridPatterns.js"]
+
+["browser_liveRegions.js"]
+
+["browser_relationProps.js"]
+
+["browser_selectionPatterns.js"]
+
+["browser_simplePatterns.js"]
+
+["browser_textPatterns.js"]
+
+["browser_tree.js"]

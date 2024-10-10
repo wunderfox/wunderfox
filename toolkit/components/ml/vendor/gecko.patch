@@ -1,0 +1,130 @@
+ diff --git a/package.json b/package.json
+index c7584c6..aca0441 100644
+--- a/package.json
++++ b/package.json
+@@ -30,7 +30,7 @@
+   "scripts": {
+     "format": "prettier --write .",
+     "format:check": "prettier --check .",
+-    "typegen": "tsc ./src/transformers.js --allowJs --declaration --emitDeclarationOnly --declarationMap --outDir types",
++    "typegen": "tsc",
+     "dev": "webpack serve --no-client-overlay",
+     "build": "webpack && npm run typegen",
+     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
+@@ -62,6 +62,7 @@
+   "homepage": "https://github.com/xenova/transformers.js#readme",
+   "dependencies": {
+     "@huggingface/jinja": "^0.3.0",
++    "@types/node": "^22.5.5",
+     "onnxruntime-node": "1.19.2",
+     "onnxruntime-web": "1.20.0-dev.20240908-de7a02beef",
+     "sharp": "^0.33.5"
+@@ -74,7 +75,7 @@
+     "jest-environment-node": "^29.5.0",
+     "jsdoc-to-markdown": "^8.0.1",
+     "prettier": "3.3.3",
+-    "typescript": "^5.2.2",
++    "typescript": "^5.6.2",
+     "wavefile": "^11.0.0",
+     "webpack": "^5.80.0",
+     "webpack-cli": "^5.0.2",
+diff --git a/src/backends/onnx.js b/src/backends/onnx.js
+index 26d771b..7731bfd 100644
+--- a/src/backends/onnx.js
++++ b/src/backends/onnx.js
+@@ -18,15 +18,8 @@
+ 
+ import { env, apis } from '../env.js';
+ 
+-// NOTE: Import order matters here. We need to import `onnxruntime-node` before `onnxruntime-web`.
+-// In either case, we select the default export if it exists, otherwise we use the named export.
+-import * as ONNX_NODE from 'onnxruntime-node';
+-
+-// Use subpath-imports to ensure Node.js and browser interoperability.
+-// See package.json and https://nodejs.org/api/packages.html#subpath-imports
+-// for more information.
+-// @ts-ignore
+ import * as ONNX_WEB from '#onnxruntime-webgpu';
++const ONNX_NODE = null;
+ 
+ export { Tensor } from 'onnxruntime-common';
+ 
+diff --git a/tsconfig.json b/tsconfig.json
+new file mode 100644
+index 0000000..8892b18
+--- /dev/null
++++ b/tsconfig.json
+@@ -0,0 +1,13 @@
++{
++  "files": [
++    "./src/transformers.js"
++  ],
++  "compilerOptions": {
++    "allowJs": true,
++    "declaration": true,
++    "emitDeclarationOnly": true,
++    "declarationMap": true,
++    "outDir": "types",
++    "types": [] // Or specify only the types you need
++  }
++}
+diff --git a/webpack.config.js b/webpack.config.js
+index 2182492..ef2540c 100644
+--- a/webpack.config.js
++++ b/webpack.config.js
+@@ -20,6 +20,7 @@ function buildConfig({
+   type = "module", // 'module' | 'commonjs'
+   ignoreModules = [],
+   externalModules = [],
++  entry,
+ } = {}) {
+   const outputModule = type === "module";
+ 
+@@ -84,33 +85,26 @@ function buildConfig({
+   return config;
+ }
+ 
+-// Do not bundle onnxruntime-web when packaging for Node.js.
+-// Instead, we use the native library (onnxruntime-node).
+-const NODE_IGNORE_MODULES = ["onnxruntime-web", "onnxruntime-web/webgpu"];
+-
+-// Do not bundle the following modules with webpack (mark as external)
+-// NOTE: This is necessary for both type="module" and type="commonjs",
+-// and will be ignored when building for web (only used for node/deno)
+-const NODE_EXTERNAL_MODULES = ["onnxruntime-node", "sharp", "fs", "path", "url"];
+-
+-
+ export default [
+-  // Web-only build
++  // minified
+   buildConfig({
+     type: "module",
++    entry: {
++        'dist/transformers.min': './src/transformers.js',
++    },
++    externalModules: {
++        '#onnxruntime-webgpu': 'chrome://global/content/ml/ort.webgpu.mjs',
++    },
+   }),
+ 
+-  // Node-compatible builds
++  // non-minified
+   buildConfig({
+-    suffix: ".mjs",
+     type: "module",
+-    ignoreModules: NODE_IGNORE_MODULES,
+-    externalModules: NODE_EXTERNAL_MODULES,
+-  }),
+-  buildConfig({
+-    suffix: ".cjs",
+-    type: "commonjs",
+-    ignoreModules: NODE_IGNORE_MODULES,
+-    externalModules: NODE_EXTERNAL_MODULES,
++    entry: {
++        'dist/transformers': './src/transformers.js',
++    },
++    externalModules: {
++        '#onnxruntime-webgpu': 'chrome://global/content/ml/ort.webgpu-dev.mjs',
++    },
+   }),
+ ];

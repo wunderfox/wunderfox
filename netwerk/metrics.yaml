@@ -1,0 +1,1659 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+# Adding a new metric? We have docs for that!
+# https://firefox-source-docs.mozilla.org/toolkit/components/glean/user/new_definitions_file.html
+
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+$tags:
+  - 'Core :: Networking'
+
+networking:
+  speculative_connect_outcome:
+    type: labeled_counter
+    description: >
+      Counts the occurrence of each outcome of a speculative connection
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=909865
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=909865
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - acreskey@mozilla.com
+    expires: never
+    labels:
+      - successful
+      - aborted_socket_limit
+      - aborted_socket_fail
+      - aborted_https_not_enabled
+    telemetry_mirror: NETWORKING_SPECULATIVE_CONNECT_OUTCOME
+
+  cookie_timestamp_fixed_count:
+    type: labeled_counter
+    description: >
+      Counts the number of times a cookie's invalid timestamp was fixed when
+      reading it from the DB.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828126
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828126#c5
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - vgosu@mozilla.com
+    labels:
+      - creationTime
+      - lastAccessed
+    expires: never
+
+  cookie_creation_fixup_diff:
+    type: custom_distribution
+    unit: second
+    description: >
+      If we fix up a cookie creation timestamp that is in the future this
+      metric records the number of seconds that timestamp was off from NOW.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828126
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828126#c5
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - vgosu@mozilla.com
+    expires: never
+    range_min: 0
+    range_max: 315360000000
+    bucket_count: 100
+    histogram_type: exponential
+
+  cookie_access_fixup_diff:
+    type: custom_distribution
+    unit: second
+    description: >
+      If we fix up a cookie lastAccessed timestamp that is in the future this
+      metric records the number of seconds that timestamp was off from NOW.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828126
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828126#c5
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - vgosu@mozilla.com
+    expires: never
+    range_min: 0
+    range_max: 315360000000
+    bucket_count: 100
+    histogram_type: exponential
+
+  cookie_count_total:
+    type: custom_distribution
+    description: >
+      Reports the total number of cookies in storage
+    range_min: 0
+    range_max: 4000
+    bucket_count: 22
+    histogram_type: exponential
+    unit: integer
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942#TDB
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - edgul@mozilla.com
+    expires: 134
+
+  cookie_count_partitioned:
+    type: custom_distribution
+    description: >
+      Reports the number of partitioned cookies in storage
+    range_min: 0
+    range_max: 4000
+    bucket_count: 22
+    histogram_type: exponential
+    unit: integer
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942#TDB
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - edgul@mozilla.com
+    expires: 134
+
+  cookie_count_unpartitioned:
+    type: custom_distribution
+    description: >
+      Reports the number of unpartitioned cookies in storage
+    range_min: 0
+    range_max: 4000
+    bucket_count: 22
+    histogram_type: exponential
+    unit: integer
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942#TDB
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - edgul@mozilla.com
+    expires: 134
+
+  cookie_count_part_by_key:
+    type: custom_distribution
+    description: >
+      A distribution of the partitioned cookies in storage belonging to
+      a particular cookie key (host + origin attributes)
+    range_min: 1
+    range_max: 220
+    bucket_count: 10
+    histogram_type: exponential
+    unit: integer
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942#TDB
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - edgul@mozilla.com
+    expires: 134
+
+  cookie_count_unpart_by_key:
+    type: custom_distribution
+    description: >
+      A distribution of the unpartitioned cookies in storage belonging to
+      a particular cookie key (host + origin attributes)
+    range_min: 1
+    range_max: 220
+    bucket_count: 10
+    histogram_type: exponential
+    unit: integer
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942#TDB
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - edgul@mozilla.com
+    expires: 134
+
+  cookie_purge_max:
+    type: custom_distribution
+    description: >
+      A distribution of the number of cookies purged across
+      all host + OAs as a result of exceeding the cookie maximum threshold
+      (single purge)
+    range_min: 1
+    range_max: 4000
+    bucket_count: 22
+    histogram_type: exponential
+    unit: integer
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942#TDB
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - edgul@mozilla.com
+    expires: 134
+
+  cookie_purge_entry_max:
+    type: custom_distribution
+    description: >
+      A distribution of the number of cookies purged for a single
+      host + OA entry as a result of exceeding the maximum threshold
+      for the given host + OA (single purge)
+    range_min: 1
+    range_max: 220
+    bucket_count: 10
+    histogram_type: exponential
+    unit: integer
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1828942#TDB
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1892158
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - edgul@mozilla.com
+    expires: 134
+
+  cookie_chips_partition_limit_overflow:
+    type: custom_distribution
+    description: >
+      The number of cookie bytes exceeding chips partition limit capacity for a single partition
+    range_min: 0
+    range_max: 16000000
+    bucket_count: 22
+    histogram_type: exponential
+    unit: integer
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1878391
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1878391
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - edgul@mozilla.com
+    expires: 134
+
+  set_cookie:
+    type: counter
+    description: >
+      This counts the number of times we set a cookie. Introduced
+      as a denomenator for measuring CHIPS adoption.
+    bugs:
+      - https://bugzilla.mozilla.org/1865199
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1912184
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1865199#c3
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1912184#c7
+    notification_emails:
+      - bvandersloot@mozilla.com
+    expires: 138
+
+  set_cookie_foreign:
+    type: rate
+    description: >
+      This counts the number of times we set a cookie from a foreign (not
+      same-site) context. Introduced as a denomenator for measuring CHIPS
+      adoption.
+    bugs:
+      - https://bugzilla.mozilla.org/1865199
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1912184
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1865199#c3
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1912184#c7
+    notification_emails:
+      - bvandersloot@mozilla.com
+    expires: 138
+    denominator_metric: networking.set_cookie
+
+  set_cookie_partitioned:
+    type: rate
+    description: >
+      This counts the number of times we set a cookie that has the Partitioned
+      attribute. This tracks the adoption of CHIPS.
+    bugs:
+      - https://bugzilla.mozilla.org/1865199
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1912184
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1865199#c3
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1912184#c7
+    notification_emails:
+      - bvandersloot@mozilla.com
+    expires: 138
+    denominator_metric: networking.set_cookie
+
+  set_cookie_foreign_partitioned:
+    type: rate
+    description: >
+      This counts the number of times we set a cookie that has the Partitioned
+      attribute in a foreign (not same-site) context. This tracks the adoption
+      of CHIPS.
+    bugs:
+      - https://bugzilla.mozilla.org/1865199
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1912184
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1865199#c3
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1912184#c7
+    notification_emails:
+      - bvandersloot@mozilla.com
+    expires: 138
+    denominator_metric: networking.set_cookie
+
+  set_cookie_expired_without_server_time:
+    type: rate
+    description: >
+      This counts the number of times a cookie is set already expires but it
+      would not if we considered the server time.
+    bugs:
+      - https://bugzilla.mozilla.org/1909980
+      - https://bugzilla.mozilla.org/1916532
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1909980#c7
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1916532#c7
+    notification_emails:
+      - baku@mozilla.com
+    expires: 138
+    denominator_metric: networking.set_cookie
+
+  dns_lookup_time:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      Time for a successful DNS resolution (msec) |
+      Migrated from Firefox Telemetry's `DNS_LOOKUP_TIME`.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1838240
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1838240#c6
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - acreskey@mozilla.com
+    expires: never
+    telemetry_mirror: DNS_LOOKUP_TIME
+
+  dns_renewal_time:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      Time for a renewed DNS OS resolution (msec) |
+      Migrated from Firefox Telemetry's `DNS_RENEWAL_TIME`.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1838240
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1838240#c6
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - acreskey@mozilla.com
+    expires: never
+    telemetry_mirror: DNS_RENEWAL_TIME
+
+  dns_renewal_time_for_ttl:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      Time for a DNS OS resolution (msec) used to get TTL |
+      Migrated from Firefox Telemetry's `DNS_RENEWAL_TIME_FOR_TTL`.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1838240
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1838240#c6
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - acreskey@mozilla.com
+    expires: never
+    telemetry_mirror: DNS_RENEWAL_TIME_FOR_TTL
+
+  dns_failed_lookup_time:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      Time for an unsuccessful DNS OS resolution (msec) |
+      Migrated from Firefox Telemetry's `DNS_FAILED_LOOKUP_TIME`.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1838240
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1838240#c6
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - acreskey@mozilla.com
+    expires: never
+    telemetry_mirror: DNS_FAILED_LOOKUP_TIME
+
+  dns_native_https_call_time:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      Time spent in the call to the native OS DNS resolution.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1885529
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1885529
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - vgosu@mozilla.com
+    expires: never
+
+  dns_native_count:
+    type: labeled_counter
+    description: >
+      The count of calls to the native DNS APIs
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1879165
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1879165
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - vgosu@mozilla.com
+      - necko@mozilla.com
+    expires: 140
+    labels:
+      - regular
+      - private
+      - https_regular
+      - https_private
+
+  fetch_keepalive_discard_count:
+    type: labeled_counter
+    description: >
+      Counts how many fetch keepalive requests are dropped due to configured
+      resource limits.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1873551
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1873551
+    notification_emails:
+      - smayya@mozilla.com
+    expires: 138
+    labels:
+      - total_keepalive_limit
+      - per_origin_limit
+
+  fetch_keepalive_request_count:
+    type: labeled_counter
+    description: >
+      Counts how many fetch keepalive requests are made. This counter helps us to
+      understand the adoption of fetch keepalive for firefox.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1873551
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1873551
+    notification_emails:
+      - smayya@mozilla.com
+    expires: 138
+    labels:
+      - worker
+      - main
+
+  http_content_onstart_delay:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      The time between dispatching OnStartRequest from the socket thread and processing it on the main thread (content process).
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1857926
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902188
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1857926#c
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902188
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - rjesup@mozilla.com
+    expires: 136
+
+  http_content_onstop_delay:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      The time between dispatching OnStopRequest from the socket thread and processing it on the main thread (content process).
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1857926
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902188
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1857926#c
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902188
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - rjesup@mozilla.com
+    expires: 136
+
+  http_content_ondatafinished_delay:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      The time between dispatching OnDataFinished from the socket thread and processing
+      it on main/background thread.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1857615
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902188
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1857615#c
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902188
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - rjesup@mozilla.com
+    expires: 136
+
+  http_content_ondatafinished_delay_2:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      The time between dispatching OnDataFinished from the socket thread and processing it
+      on the background thread.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1857615
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902188
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1913140
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1857615#c
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902188
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - jesup@mozilla.com
+    expires: 136
+
+  http_content_ondatafinished_to_onstop_delay:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      The time between processing OnDataFinished and processing OnStopRequest (if OnDataFinished comes first)
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1857615
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902188
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1857615#c
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902188
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - rjesup@mozilla.com
+    expires: 136
+
+  http_content_html5parser_ondatafinished_to_onstop_delay:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      The time between processing OnDataFinished and processing OnStopRequest (if OnDataFinished comes first)
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1857926
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902188
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1857926
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902188
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - rjesup@mozilla.com
+    expires: 136
+
+  http_content_cssloader_ondatafinished_to_onstop_delay:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      The time between processing OnDataFinished and processing OnStopRequest for CSSLoader in the content process
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1883391
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902186
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1883391
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+    expires: 136
+
+  http_ip_addr_any_count:
+    type: labeled_counter
+    description: >
+      The number of times we see the IP address 0.0.0.0 or its IPv6 equivalent.
+    bugs:
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=1914583
+    data_reviews:
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=1914583
+    data_sensitivity:
+    - technical
+    notification_emails:
+    - necko@mozilla.com
+    expires: 138
+    labels:
+    - not_blocked_requests
+    - blocked_requests
+
+  http_onstart_suspend_total_time:
+    type: timing_distribution
+    time_unit: millisecond
+    telemetry_mirror: HTTP_ONSTART_SUSPEND_TOTAL_TIME
+    description: >
+      Time in milliseconds that http channel spent suspended between AsyncOpen and OnStartRequest.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1897209
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1347948
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1897209
+    notification_emails:
+      - necko@mozilla.com
+    expires: never
+
+  http_1_download_throughput:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 10000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The download throughput for  http/1.0, http/1.1 requests larger than 10MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1846798
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1846798#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - acreskey@mozilla.com
+    expires: never
+    telemetry_mirror: NETWORKING_DOWNLOAD_THROUGHPUT_HTTP_1
+
+  http_2_download_throughput:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 10000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The download throughput for http/2 requests larger than 10MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1846798
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1846798#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - acreskey@mozilla.com
+    expires: never
+    telemetry_mirror: NETWORKING_DOWNLOAD_THROUGHPUT_HTTP_2
+
+  http_3_download_throughput:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 10000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The download throughput for http/3 requests larger than 10MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1846798
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1846798#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - acreskey@mozilla.com
+    expires: never
+    telemetry_mirror: NETWORKING_DOWNLOAD_THROUGHPUT_HTTP_3
+
+  http_3_download_throughput_10_50: &http_3_download_throughput_10_50
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 10000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The download throughput for http/3 requests between 10MB and 50MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1909663
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1909663
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+    expires: never
+
+  http_3_download_throughput_50_100:
+    <<: *http_3_download_throughput_10_50
+    description: >
+     The download throughput for http/3 requests between 50MB and 100MB. Measured in megabits per second, Mbps.
+
+  http_3_download_throughput_100:
+    <<: *http_3_download_throughput_10_50
+    description: >
+     The download throughput for http/3 requests size larger than 100MB. Measured in megabits per second, Mbps.
+
+  http_1_upload_throughput:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 5000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The upload throughput for http/1.0, http/1.1 requests larger than 10MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - acreskey@mozilla.com
+    expires: never
+    telemetry_mirror: HTTP_UPLOAD_THROUGHPUT_MBPS_HTTP_1
+
+  http_2_upload_throughput:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 5000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The upload throughput for http/2 requests larger than 10MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - acreskey@mozilla.com
+    expires: never
+    telemetry_mirror: HTTP_UPLOAD_THROUGHPUT_MBPS_HTTP_2
+
+  http_3_upload_throughput:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 5000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The upload throughput for http/3 requests larger than 10MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - acreskey@mozilla.com
+    expires: never
+    telemetry_mirror: HTTP_UPLOAD_THROUGHPUT_MBPS_HTTP_3
+
+  http_1_upload_throughput_10_50:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 5000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The upload throughput for http/1.0, http/1.1 request size between 10MB and 50MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1866739
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+    telemetry_mirror: HTTP_UPLOAD_THROUGHPUT_MBPS_HTTP_1_10_50
+
+  http_1_upload_throughput_50_100:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 5000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The upload throughput for http/1.0, http/1.1 request size between 50MB and 100MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1866739
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+    telemetry_mirror: HTTP_UPLOAD_THROUGHPUT_MBPS_HTTP_1_50_100
+
+  http_1_upload_throughput_100:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 5000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The upload throughput for http/1.0, http/1.1 request size larger than 100MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1866739
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+    telemetry_mirror: HTTP_UPLOAD_THROUGHPUT_MBPS_HTTP_1_100
+
+  http_2_upload_throughput_10_50:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 5000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The upload throughput for http/2 request size between 10MB and 50MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1866739
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+    telemetry_mirror: HTTP_UPLOAD_THROUGHPUT_MBPS_HTTP_2_10_50
+
+  http_2_upload_throughput_50_100:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 5000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The upload throughput for http/2 request size between 50MB and 100MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1866739
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+    telemetry_mirror: HTTP_UPLOAD_THROUGHPUT_MBPS_HTTP_2_50_100
+
+  http_2_upload_throughput_100:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 5000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The upload throughput for http/2 request size larger than 100MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1866739
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+    telemetry_mirror: HTTP_UPLOAD_THROUGHPUT_MBPS_HTTP_2_100
+
+  http_3_upload_throughput_10_50:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 5000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The upload throughput for http/3 request size between 10MB and 50MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1866739
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+    telemetry_mirror: HTTP_UPLOAD_THROUGHPUT_MBPS_HTTP_3_10_50
+
+  http_3_upload_throughput_50_100:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 5000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The upload throughput for http/3 request size between 50MB and 100MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1866739
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+    telemetry_mirror: HTTP_UPLOAD_THROUGHPUT_MBPS_HTTP_3_50_100
+
+  http_3_upload_throughput_100:
+    type: custom_distribution
+    unit: mbps
+    range_min: 0
+    range_max: 5000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+     The upload throughput for http/3 request size larger than 100MB. Measured in megabits per second, Mbps.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1866739
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1858256#c2
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+    telemetry_mirror: HTTP_UPLOAD_THROUGHPUT_MBPS_HTTP_3_100
+
+  http_3_ecn_ce_ect0_ratio_sent: &http_3_ecn_ce_ect0_ratio_sent
+    type: custom_distribution
+    unit: integer
+    range_min: 0
+    range_max: 2000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+      HTTP3: ECN CE to ECT0 ratio (multiply by 10000) sent.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902065
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902065
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - minden@mozilla.com
+    expires: never
+
+  http_3_ecn_ce_ect0_ratio_received:
+    <<: *http_3_ecn_ce_ect0_ratio_sent
+    description: >
+      HTTP3: ECN CE to ECT0 ratio (multiply by 10000) received.
+
+  http_3_ecn_path_capability:
+    type: labeled_counter
+    description: >
+      Number of paths known to be ECN capable or not-capable.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902065
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902065
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - minden@mozilla.com
+    expires: never
+    labels:
+      - capable
+      - not-capable
+
+  http_3_loss_ratio:
+    type: custom_distribution
+    unit: integer
+    range_min: 0
+    range_max: 2000
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+      HTTP3: packet loss ratio (multiply by 10000).
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1917778
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1917778
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - minden@mozilla.com
+    expires: never
+
+  cache_metadata_first_read_time: &cache_metadata_first_read_time
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      Time spent to read the first part of the metadata from the cache entry file.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1908994
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1908994
+    notification_emails:
+      - necko@mozilla.com
+    expires: never
+    telemetry_mirror: NETWORK_CACHE_METADATA_FIRST_READ_TIME_MS
+
+  cache_metadata_second_read_time:
+    <<: *cache_metadata_first_read_time
+    description: >
+      Time spent to read the missing part of the metadata from the cache entry file.
+    telemetry_mirror: NETWORK_CACHE_METADATA_SECOND_READ_TIME_MS
+
+  cache_metadata_size:
+    type: memory_distribution
+    memory_unit: byte
+    description:
+      Size of the metadata in bytes parsed from the disk.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1133739
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1495336
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1908994
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1908994
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+    expires: never
+
+  residual_cache_folder_count:
+    type: counter
+    description: >
+      Counts how often we find a cache folder that wasn't purged
+      at shutdown by a background task process.
+    bugs:
+      - https://bugzilla.mozilla.org/1848542
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1848542
+    notification_emails:
+      - vgosu@mozilla.com
+    expires: 136
+
+  residual_cache_folder_removal:
+    type: labeled_counter
+    description: >
+      Counts how often succeed/fail in removing cache folder
+      that wasn't purged at shutdown
+    bugs:
+      - https://bugzilla.mozilla.org/1848542
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1848542
+    notification_emails:
+      - vgosu@mozilla.com
+    expires: 136
+    labels:
+      - success
+      - failure
+
+  trr_request_count:
+    type: labeled_counter
+    description: >
+      The count of successful TRR requests keyed by regular/private browsing
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1866245
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1902190
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1866245
+    notification_emails:
+      - vgosu@mozilla.com
+      - necko@mozilla.com
+    expires: 140
+    labels:
+      - regular
+      - private
+
+  trr_request_count_per_conn:
+    type: labeled_counter
+    description: >
+      Number of DOH requests per connection keyed by HTTP version
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1916352
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1916352
+    notification_emails:
+      - kershaw@mozilla.com
+      - necko@mozilla.com
+    expires: never
+    labels:
+      - h1
+      - h2
+      - h3
+
+  http_redirect_to_scheme_top_level: &http_redirect_to_scheme_top_level
+    type: labeled_counter
+    description: >
+      Count of the HTTP redirection that triggered by top-level document, keyed by the URL scheme redirected to
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1413512
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1567462
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1897290
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1897290
+    notification_emails:
+      - necko@mozilla.com
+    expires: never
+
+  http_redirect_to_scheme_subresource:
+    <<: *http_redirect_to_scheme_top_level
+    description: >
+      Count of the HTTP redirection that triggered by subresource, keyed by the URL scheme redirected to
+
+  http_response_version:
+    type: labeled_counter
+    description: >
+      HTTP protocol version used on response from nsHttp.h
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1876776
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1876776#c2
+    notification_emails:
+      - necko@mozilla.com
+    expires: never
+    labels:
+      - unknown
+      - http_1
+      - http_2
+      - http_3
+
+  http_response_status_code:
+    type: labeled_counter
+    description: >
+      HTTP Response Status Code (200, 301, 302, 304, 307, 308, 400, 401, 403, 404, 421, 425, 429, other 400 and 500)
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1896350
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1903410
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1896350
+    notification_emails:
+      - necko@mozilla.com
+      - smayya@mozilla.com
+    expires: never
+    labels:
+      - 200_ok
+      - 301_moved_permanently
+      - 302_found
+      - 304_not_modified
+      - 307_temporary_redirect
+      - 308_permanent_redirect
+      - 400_bad_request
+      - 401_unauthorized
+      - 403_forbidden
+      - 404_not_found
+      - 421_misdirected_request
+      - 425_too_early
+      - 429_too_many_requests
+      - other_4xx
+      - other_5xx
+      - other
+
+  https_rr_presented:
+    type: labeled_counter
+    description: >
+      HTTPS RR is presented or not
+    bugs:
+      - https://bugzilla.mozilla.org/1686421
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1686421
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+    labels:
+      - presented
+      - presented_with_http3
+      - none
+
+  http_channel_onstart_success_https_rr:
+    type: labeled_counter
+    description: >
+      Successfully started HTTP channels when HTTPS RR is used
+    bugs:
+      - https://bugzilla.mozilla.org/1682552
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1682552
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+    labels:
+      - success
+      - failure
+      - success_ech_used
+      - failure_ech_used
+
+  http_channel_disposition:
+    type: labeled_counter
+    description: >
+      Channel Disposition for HTTP and HTTPS:
+      cancel, disk, net_ok, net_early_fail, and net_late_fail
+    bugs:
+      - https://bugzilla.mozilla.org/1341128
+      - https://bugzilla.mozilla.org/1898248
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1898248
+    notification_emails:
+      - necko@mozilla.com
+    expires: never
+    labels:
+      - http_cancelled
+      - http_disk
+      - http_net_ok
+      - http_net_early_fail
+      - http_net_late_fail
+      - https_cancelled
+      - https_disk
+      - https_net_ok
+      - https_net_early_fail
+      - https_net_late_fail
+
+  http_channel_disposition_enabled_upgrade: &http_channel_disposition_enabled_upgrade
+    type: labeled_counter
+    description: >
+      Upgrading display content Channel Disposition (key: enable_upgrade)
+    bugs:
+      - https://bugzilla.mozilla.org/1440701
+      - https://bugzilla.mozilla.org/1898248
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1898248
+    notification_emails:
+      - necko@mozilla.com
+      - seceng-telemetry@mozilla.com
+    expires: never
+    labels:
+      - cancel
+      - disk
+      - net_ok
+      - net_early_fail
+      - net_late_fail
+
+  http_channel_disposition_enabled_no_reason:
+    <<: *http_channel_disposition_enabled_upgrade
+    description: >
+      Upgrading display content Channel Disposition (key: enabled_no_reason)
+
+  http_channel_disposition_enabled_wont:
+    <<: *http_channel_disposition_enabled_upgrade
+    description: >
+      Upgrading display content Channel Disposition (key: enabled_wont)
+
+  http_channel_disposition_disabled_upgrade:
+    <<: *http_channel_disposition_enabled_upgrade
+    description: >
+      Upgrading display content Channel Disposition (key: disable_upgrade)
+
+  http_channel_disposition_disabled_no_reason:
+    <<: *http_channel_disposition_enabled_upgrade
+    description: >
+      Upgrading display content Channel Disposition (key: disabled_no_reason)
+
+  http_channel_disposition_disabled_wont:
+    <<: *http_channel_disposition_enabled_upgrade
+    description: >
+      Upgrading display content Channel Disposition (key: disabled_wont)
+
+  http_channel_onstart_status:
+    type: labeled_counter
+    description: >
+      Whether successfully started HTTP channels
+    bugs:
+      - https://bugzilla.mozilla.org/1473333
+      - https://bugzilla.mozilla.org/1587226
+      - https://bugzilla.mozilla.org/1898248
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1898248
+    notification_emails:
+      - necko@mozilla.com
+    expires: never
+    labels:
+      - successful
+      - fail
+
+  http_channel_page_open_to_first_sent:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      Time in milliseconds from AsyncOpen to first byte of request sent,
+      applicable for page loads without HTTPS RR
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1697480
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1697480
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+
+  http_channel_sub_open_to_first_sent:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      Time in milliseconds from AsyncOpen to first byte of request sent,
+      applicable for sub-resource loads without HTTPS RR
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1697480
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1697480
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+
+  http_channel_page_open_to_first_sent_https_rr:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      Time in milliseconds from AsyncOpen to first byte of request sent,
+      applicable for page loads with HTTPS RR
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1697480
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1697480
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+
+  http_to_https_upgrade_reason:
+    type: labeled_counter
+    description: >
+      Whether a top-level HTTP request gets upgraded to HTTPS and the reason for it
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1883954
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1883954
+    notification_emails:
+      - ckerschb@mozilla.com
+      - freddyb@mozilla.com
+      - kershaw@mozilla.com
+      - necko@mozilla.com
+      - seceng-telemetry@mozilla.com
+    expires: never
+    labels:
+      - not_initialized
+      - not_initialized_https #Bug 1912222, remove eventually
+      - no_upgrade
+      - no_upgrade_https #Bug 1912222, remove eventually
+      - already_https
+      - hsts
+      - https_only_upgrade
+      - https_only_upgrade_downgrade
+      - https_first_upgrade
+      - https_first_upgrade_downgrade
+      - https_first_schemeless_upgrade
+      - https_first_schemeless_upgrade_downgrade
+      - csp_uir
+      - https_rr
+      - web_extension_upgrade
+      - upgrade_exception
+
+  http_channel_sub_open_to_first_sent_https_rr:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      Time in milliseconds from AsyncOpen to first byte of request sent,
+      applicable for sub-resource loads with HTTPS RR
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1697480
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1697480
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+
+  transaction_wait_time_https_rr:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      Time from submission to dispatch of transaction when HTTPS RR is used (ms)
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1697480
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1697480
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+
+  proxy_info_type:
+    type: labeled_counter
+    description: >
+      The proxies configurations created in the browser session (SOCKSv4, SOCKSv5, HTTP, HTTPS)
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1879848
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1879848
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - manuel@mozilla.com
+    expires: 135
+    labels:
+      - http
+      - https
+      # SOCKS4 Proxy
+      - socks4
+      # SOCKS4a Proxy. Proxy resolves URL hostname
+      - socks4a
+      # SOCKS5 Proxy
+      - socks5
+      # SOCKS5 Proxy. Proxy resolves URL hostname
+      # Use convention from curl for socks5 proxies that resolve the hostname
+      # https://curl.se/libcurl/c/CURLOPT_PROXY.html
+      - socks5h
+      # No proxy
+      - direct
+      - unknown
+
+  transaction_wait_time:
+    type: timing_distribution
+    time_unit: millisecond
+    description: >
+      Time from submission to dispatch of transaction without HTTPS RR (ms)
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1697480
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1697480
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - kershaw@mozilla.com
+    expires: never
+
+  os_socket_limit_reached:
+    type: counter
+    description: >
+      Counts the number of times the os socket limit was reached. i.e. CanAttachSocket() returned false.
+    bugs:
+      - https://bugzilla.mozilla.org/1901855
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1901855#c1
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - acreskey@mozilla.com
+    expires: never
+
+  http_3_udp_datagram_segment_size_sent:
+    type: memory_distribution
+    memory_unit: byte
+    description: >
+      HTTP3 UDP datagram segment size sent.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1906853
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1906853
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - minden@mozilla.com
+    expires: never
+
+  http_3_udp_datagram_segment_size_received:
+    type: memory_distribution
+    memory_unit: byte
+    description: >
+      HTTP3 UDP datagram size received.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1906853
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1906853
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - minden@mozilla.com
+    expires: never
+
+  http_3_udp_datagram_size_received:
+    type: memory_distribution
+    memory_unit: byte
+    description: >
+      HTTP3 UDP datagram size received.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1906853
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1906853
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - minden@mozilla.com
+    expires: never
+
+  http_3_udp_datagram_segments_received:
+    type: custom_distribution
+    unit: integer
+    range_min: 0
+    # Maximum number of UDP segments per datagram.
+    #
+    # See e.g. Linux https://github.com/torvalds/linux/blob/20371ba120635d9ab7fc7670497105af8f33eb08/include/linux/udp.h#L111.
+    range_max: 128
+    bucket_count: 100
+    histogram_type: exponential
+    description: >
+      HTTP3 UDP number of segments per datagram received.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1906853
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1906853
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - necko@mozilla.com
+      - minden@mozilla.com
+    expires: never
+
+network.dns:
+  trr_confirmation_context:
+    type: event
+    description: >
+      This telemetry records the status of the TRR confirmation across.
+      The value of the event is one of:   "ok"   "trying"
+      This event was generated to correspond to the Legacy Telemetry event
+      network.dns.trrConfirmation#context.
+    bugs:
+      - https://bugzil.la/1691408
+      - https://bugzil.la/1694949
+    data_reviews:
+      - https://bugzil.la/1691408
+      - https://bugzil.la/1694949
+    notification_emails:
+      - vgosu@mozilla.com
+      - necko@mozilla.com
+    expires: never
+    extra_keys:
+      value:
+        description: >
+          The `value` of the event. Mirrors to the Legacy Telemetry
+          event's `value` parameter.
+          The `ConfirmationState`.
+        type: quantity
+      trigger:
+        description: >
+          The reason why this confirmation was triggered. Values: [cp-connectivity, pref-change, context-init, retry, failed-lookups]
+        type: string
+      contextReason:
+        description: >
+          The cause of the current confirmation context. Values: [success, pref-change, network-change, shutdown]
+        type: string
+      attemptCount:
+        description: >
+          The number of NS requests that were issued for this confirmation.
+        type: quantity
+      results:
+        description: >
+          String representation of the last 32 confirmation results. Example: nnnnnnttttttttt indicates a number of network (n) failures followed by timeouts (t).
+        type: string
+      failedLookups:
+        description: >
+          When the trigger is failed-lookups, this contains the string representation of the failures that triggered the confirmation.
+        type: string
+      networkID:
+        description: >
+          The network ID for the recorded confirmation attempts
+        type: string
+      captivePortal:
+        description: >
+          One of [unknown, not_captive, unlocked, locked]
+        type: string
+      time:
+        description: >
+          Time from first confirmation attempt to event being recorded
+        type: string
+    telemetry_mirror: NetworkDns_Trrconfirmation_Context

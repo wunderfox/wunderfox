@@ -1,0 +1,43 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+---
+$schema: moz://mozilla.org/schemas/glean/pings/2-0-0
+
+quick-suggest:
+  description: |
+    A ping representing a single event happening with or to a QuickSuggest.
+    Distinguishable by its `ping_type`.
+    Does not contain a `client_id`, preferring a `context_id` instead.
+  include_client_id: false
+  bugs:
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=1836283
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=1854755
+  data_reviews:
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=1836283
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=1854755
+  notification_emails:
+    - najiang@mozilla.com
+
+urlbar-keyword-exposure:
+  description: |
+    This ping is submitted only when urlbar keyword exposures are enabled. See
+    the `keywordExposureResults` urlbar Nimbus variable. When enabled, the ping
+    is submitted at the end of urlbar sessions during which one or more exposure
+    results are matched. (A "session" begins when the user focuses the urlbar
+    and ends with an engagement or abandonment.) Exposure results include all
+    results defined in the `exposureResults` variable. They also include the
+    "rust_exposure" result type if the `quickSuggestExposureSuggestionTypes`
+    variable is defined. The ping will contain one `urlbar.keyword_exposure`
+    event for each instance where a result is matched during the session. The
+    ping is not submitted for sessions in private windows.
+  include_client_id: false
+  bugs:
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=1881875
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=1915507
+  data_reviews:
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=1881875
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=1915507
+  notification_emails:
+    - fx-search-telemetry@mozilla.com

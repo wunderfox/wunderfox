@@ -1,0 +1,153 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#![cfg(feature = "with_gecko")]
+
+use crate::metrics::__glean_metric_maps as metric_maps;
+use nsstring::nsACString;
+use std::sync::atomic::Ordering;
+
+#[no_mangle]
+pub extern "C" fn fog_labeled_enum_to_str(id: u32, label: u16, value: &mut nsACString) {
+    let val = metric_maps::labeled_enum_to_str(id, label);
+    value.assign(&val);
+}
+
+#[no_mangle]
+pub extern "C" fn fog_labeled_boolean_get(id: u32, label: &nsACString) -> u32 {
+    labeled_submetric_get!(
+        id,
+        label,
+        LABELED_BOOLEAN_MAP,
+        labeled_boolean_get,
+        BOOLEAN_MAP,
+        LabeledBooleanMetric
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn fog_labeled_boolean_enum_get(id: u32, label: u16) -> u32 {
+    labeled_submetric_enum_get!(
+        id,
+        label,
+        labeled_boolean_enum_get,
+        BOOLEAN_MAP,
+        LabeledBooleanMetric
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn fog_labeled_counter_get(id: u32, label: &nsACString) -> u32 {
+    labeled_submetric_get!(
+        id,
+        label,
+        LABELED_COUNTER_MAP,
+        labeled_counter_get,
+        COUNTER_MAP,
+        LabeledCounterMetric
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn fog_labeled_counter_enum_get(id: u32, label: u16) -> u32 {
+    labeled_submetric_enum_get!(
+        id,
+        label,
+        labeled_counter_enum_get,
+        COUNTER_MAP,
+        LabeledCounterMetric
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn fog_labeled_custom_distribution_get(id: u32, label: &nsACString) -> u32 {
+    labeled_submetric_get!(
+        id,
+        label,
+        LABELED_CUSTOM_DISTRIBUTION_MAP,
+        labeled_custom_distribution_get,
+        CUSTOM_DISTRIBUTION_MAP,
+        LabeledCustomDistributionMetric
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn fog_labeled_custom_distribution_enum_get(id: u32, label: u16) -> u32 {
+    labeled_submetric_enum_get!(
+        id,
+        label,
+        labeled_custom_distribution_enum_get,
+        CUSTOM_DISTRIBUTION_MAP,
+        LabeledCustomDistributionMetric
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn fog_labeled_memory_distribution_get(id: u32, label: &nsACString) -> u32 {
+    labeled_submetric_get!(
+        id,
+        label,
+        LABELED_MEMORY_DISTRIBUTION_MAP,
+        labeled_memory_distribution_get,
+        MEMORY_DISTRIBUTION_MAP,
+        LabeledMemoryDistributionMetric
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn fog_labeled_memory_distribution_enum_get(id: u32, label: u16) -> u32 {
+    labeled_submetric_enum_get!(
+        id,
+        label,
+        labeled_memory_distribution_enum_get,
+        MEMORY_DISTRIBUTION_MAP,
+        LabeledMemoryDistributionMetric
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn fog_labeled_string_get(id: u32, label: &nsACString) -> u32 {
+    labeled_submetric_get!(
+        id,
+        label,
+        LABELED_STRING_MAP,
+        labeled_string_get,
+        STRING_MAP,
+        LabeledStringMetric
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn fog_labeled_string_enum_get(id: u32, label: u16) -> u32 {
+    labeled_submetric_enum_get!(
+        id,
+        label,
+        labeled_string_enum_get,
+        STRING_MAP,
+        LabeledStringMetric
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn fog_labeled_timing_distribution_get(id: u32, label: &nsACString) -> u32 {
+    labeled_submetric_get!(
+        id,
+        label,
+        LABELED_TIMING_DISTRIBUTION_MAP,
+        labeled_timing_distribution_get,
+        TIMING_DISTRIBUTION_MAP,
+        LabeledTimingDistributionMetric
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn fog_labeled_timing_distribution_enum_get(id: u32, label: u16) -> u32 {
+    labeled_submetric_enum_get!(
+        id,
+        label,
+        labeled_timing_distribution_enum_get,
+        TIMING_DISTRIBUTION_MAP,
+        LabeledTimingDistributionMetric
+    )
+}

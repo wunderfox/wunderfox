@@ -1,0 +1,3 @@
+pypi:uv==0.4.15
+vendored:third_party/python/toml
+vendored:third_party/python/voluptuous

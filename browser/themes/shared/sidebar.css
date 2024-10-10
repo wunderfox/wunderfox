@@ -1,0 +1,230 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#sidebar-box {
+  background-color: var(--sidebar-background-color);
+  color: var(--sidebar-text-color);
+  text-shadow: none;
+  max-width: 75vw;
+  min-width: 14em;
+  width: 18em;
+
+  :root[lwt-sidebar="light"] & {
+    color-scheme: light;
+  }
+  :root[lwt-sidebar="dark"] & {
+    color-scheme: dark;
+  }
+
+  /* stylelint-disable-next-line media-query-no-invalid */
+  @media (-moz-bool-pref: "sidebar.revamp") {
+    min-width: 200px;
+    padding-block-end: var(--space-small);
+    padding-inline-end: var(--space-small);
+    position: relative;
+
+    &[positionend] {
+      padding-inline-end: 0;
+      padding-inline-start: var(--space-small);
+    }
+  }
+
+  &[sidebarcommand="viewGenaiChatSidebar"] {
+    min-width: 400px;
+  }
+
+  &[sidebarcommand="viewReviewCheckerSidebar"] {
+    width: 340px;
+  }
+}
+
+/* Note that with sidebar.revamp we apply the --sidebar-background-color to the
+ * #sidebar browser. We still need the #sidebar-box background to match the
+ * toolbar tho */
+/* stylelint-disable-next-line media-query-no-invalid */
+@media (-moz-bool-pref: "sidebar.revamp") {
+  #sidebar-main,
+  #sidebar-box {
+    background-color: var(--toolbar-bgcolor);
+    color: var(--toolbar-color);
+    text-shadow: none;
+
+    :root[lwtheme] & {
+      background-color: var(--lwt-accent-color);
+      background-image: linear-gradient(var(--toolbar-bgcolor), var(--toolbar-bgcolor));
+    }
+  }
+}
+
+#sidebar-header {
+  font-size: 1.333em;
+  padding: 8px;
+  border-bottom: 1px solid var(--sidebar-border-color);
+}
+
+#sidebar-spacer {
+  /* To ensure the button doesn't expand unnecessarily for short labels, the
+     spacer should significantly out-flex the button. */
+  flex: 1000 1000;
+}
+
+#sidebar {
+  flex: 1;
+
+  /* stylelint-disable-next-line media-query-no-invalid */
+  @media (-moz-bool-pref: "sidebar.revamp") {
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--content-area-shadow);
+    border: 0.5px solid var(--sidebar-border-color);
+    background-color: var(--sidebar-background-color);
+    color: var(--sidebar-text-color);
+  }
+}
+
+.sidebar-splitter {
+  --splitter-width: 4px;
+  /* Ensure the splitter is painted on top of the sidebar box it overlaps.
+  Otherwise, the user may be unable to drag the splitter to resize the sidebar. */
+  z-index: 1;
+
+  /* stylelint-disable-next-line media-query-no-invalid */
+  @media (-moz-bool-pref: "sidebar.revamp") or (not (-moz-platform: linux)) {
+    /* We don't let the splitter overlap the sidebar on Linux since the sidebar's
+    scrollbar is too narrow on Linux. */
+    appearance: none;
+    border: 0 solid;
+    border-inline-end-width: 1px;
+    border-color: var(--sidebar-border-color);
+    min-width: 1px;
+    width: var(--splitter-width);
+    background-image: none !important;
+    background-color: transparent;
+    margin-inline-start: calc(-1 * var(--splitter-width));
+    position: relative;
+
+    #sidebar-box[positionend] + & {
+      border-inline-width: 1px 0;
+      margin-inline: 0 calc(-1 * var(--splitter-width));
+    }
+  }
+
+  /* stylelint-disable-next-line media-query-no-invalid */
+  @media (-moz-bool-pref: "sidebar.revamp") {
+    --splitter-width: 6px;
+    transition: background-color 0.5s ease-in-out;
+    border-style: none;
+
+    &:hover {
+      background-color: var(--focus-outline-color);
+    }
+  }
+}
+
+#sidebar-throbber[loading="true"] {
+  list-style-image: url("chrome://global/skin/icons/loading.svg");
+  -moz-context-properties: fill;
+  fill: currentColor;
+}
+
+#sidebar-title {
+  margin: 0;
+  padding: 0;
+  padding-inline: 8px 4px;
+  flex: 1;
+}
+
+#sidebar-switcher-arrow {
+  -moz-context-properties: fill;
+  fill: currentColor;
+  opacity: 0.8;
+}
+
+#sidebar-switcher-arrow {
+  list-style-image: url(chrome://global/skin/icons/arrow-down-12.svg);
+  width: 12px;
+  height: 12px;
+}
+
+#sidebar-switcher-target {
+  appearance: none;
+  color: inherit;
+  margin-inline-end: 4px;
+  border-radius: var(--toolbarbutton-border-radius);
+  border: 1px solid transparent;
+  padding: 2px 4px;
+  flex: 1;
+}
+
+#sidebar-switcher-target:hover {
+  background-color: var(--toolbarbutton-hover-background);
+}
+
+#sidebar-switcher-target:hover:active,
+#sidebar-switcher-target.active {
+  background-color: var(--toolbarbutton-active-background);
+}
+
+#sidebar-switcher-target:focus-visible,
+#sidebar-close:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: 0;
+}
+
+#sidebarMenu-popup > menuitem {
+  min-width: 16em;
+}
+
+menuseparator + #sidebar-extensions-separator {
+  display: none;
+}
+
+#sidebar-box[sidebarcommand="viewBookmarksSidebar"] > #sidebar-header > #sidebar-switcher-target > #sidebar-icon {
+  list-style-image: url(chrome://browser/skin/bookmark.svg);
+  -moz-context-properties: fill;
+  fill: currentColor;
+  opacity: 0.8;
+}
+
+#sidebar-box[sidebarcommand="viewHistorySidebar"] > #sidebar-header > #sidebar-switcher-target > #sidebar-icon {
+  list-style-image: url(chrome://browser/skin/history.svg);
+  -moz-context-properties: fill;
+  fill: currentColor;
+  opacity: 0.8;
+}
+
+#sidebar-box[sidebarcommand="viewTabsSidebar"] > #sidebar-header > #sidebar-switcher-target > #sidebar-icon {
+  list-style-image: url(chrome://browser/skin/synced-tabs.svg);
+  -moz-context-properties: fill;
+  fill: currentColor;
+  opacity: 0.8;
+}
+
+/* WebExtension Sidebars */
+#sidebar-box[sidebarcommand$="-sidebar-action"] > #sidebar-header > #sidebar-switcher-target > #sidebar-icon {
+  list-style-image: var(--webextension-menuitem-image, inherit);
+  -moz-context-properties: fill;
+  fill: currentColor;
+  width: 16px;
+  height: 16px;
+}
+
+.webextension-menuitem {
+  list-style-image: var(--webextension-menuitem-image, inherit) !important;
+}
+
+/* Sidebar animation */
+
+#sidebar-main,
+sidebar-main,
+#sidebar-box,
+#sidebar-splitter,
+#tabbrowser-tabbox {
+  transform-origin: 0 0;
+  will-change: translate;
+}
+
+#sidebar-main {
+  /* Prevent overflow during sidebar animation when the sidebar is reordered */
+  overflow: clip;
+}

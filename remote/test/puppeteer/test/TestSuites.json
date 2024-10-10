@@ -1,0 +1,68 @@
+{
+  "testSuites": [
+    {
+      "id": "chrome-headless",
+      "platforms": ["linux", "win32", "darwin"],
+      "parameters": ["chrome", "headless", "cdp"],
+      "expectedLineCoverage": 93
+    },
+    {
+      "id": "chrome-headful",
+      "platforms": ["linux"],
+      "parameters": ["chrome", "headful", "cdp"],
+      "expectedLineCoverage": 93
+    },
+    {
+      "id": "chrome-headless-shell",
+      "platforms": ["linux"],
+      "parameters": ["chrome", "chrome-headless-shell", "cdp"],
+      "expectedLineCoverage": 93
+    },
+    {
+      "id": "firefox-headless",
+      "platforms": ["linux", "darwin"],
+      "parameters": ["firefox", "headless", "webDriverBiDi"],
+      "expectedLineCoverage": 56
+    },
+    {
+      "id": "firefox-headful",
+      "platforms": ["linux"],
+      "parameters": ["firefox", "headful", "webDriverBiDi"],
+      "expectedLineCoverage": 56
+    },
+    {
+      "id": "firefox-cdp",
+      "platforms": ["linux"],
+      "parameters": ["firefox", "headless", "cdp"],
+      "expectedLineCoverage": 80
+    },
+    {
+      "id": "chrome-bidi",
+      "platforms": ["linux"],
+      "parameters": ["chrome", "headless", "webDriverBiDi"],
+      "expectedLineCoverage": 56
+    }
+  ],
+  "parameterDefinitions": {
+    "chrome": {
+      "PUPPETEER_BROWSER": "chrome"
+    },
+    "firefox": {
+      "PUPPETEER_BROWSER": "firefox"
+    },
+    "headless": {
+      "HEADLESS": "true",
+      "PUPPETEER_LOGLEVEL": "silent"
+    },
+    "headful": {
+      "HEADLESS": "false"
+    },
+    "chrome-headless-shell": {
+      "HEADLESS": "shell"
+    },
+    "webDriverBiDi": {
+      "PUPPETEER_PROTOCOL": "webDriverBiDi"
+    },
+    "cdp": {}
+  }
+}

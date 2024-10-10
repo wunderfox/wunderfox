@@ -1,0 +1,93 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://global/skin/global.css");
+@import url("chrome://browser/skin/browser-colors.css");
+
+:root {
+  --sidebar-box-border: 0.5px solid var(--border-color-deemphasized);
+
+  background-color: transparent;
+  color: var(--sidebar-text-color);
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
+
+moz-card {
+  margin-block-start: var(--space-medium);
+  background-color: var(--toolbar-bgcolor);
+  color: var(--toolbar-color);
+  box-shadow: none;
+  border: var(--sidebar-box-border);
+  border-radius: var(--border-radius-medium);
+
+  &::part(summary) {
+    padding-block: var(--space-medium);
+  }
+
+  &::part(heading) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &.phone::part(icon),
+  &.mobile::part(icon) {
+    background-image: url("chrome://browser/skin/device-phone.svg");
+  }
+
+  &.desktop::part(icon) {
+    background-image: url("chrome://browser/skin/device-desktop.svg");
+  }
+
+  &.tablet::part(icon) {
+    background-image: url("chrome://browser/skin/device-tablet.svg");
+  }
+}
+
+.sidebar-panel {
+  padding: var(--space-large);
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: var(--border-radius-medium);
+  width: 100%;
+}
+
+fxview-search-textbox {
+  &::part(input) {
+    background-color: var(--toolbar-field-background-color);
+    color: var(--toolbar-field-color);
+    border-radius: 2em;
+    border: var(--sidebar-box-border);
+  }
+
+  &::part(container) {
+    width: 100%;
+  }
+}
+
+fxview-empty-state {
+  &::part(container) {
+    margin-block-start: var(--space-medium);
+    background-color: var(--toolbar-bgcolor);
+    color: var(--toolbar-color);
+    border: var(--sidebar-box-border);
+    border-radius: var(--border-radius-medium);
+    padding-block: 83px;
+    padding-inline: var(--space-medium);
+  }
+
+  &::part(header) {
+    font-size: var(--font-size-large);
+  }
+
+  &::part(image) {
+    fill: var(--toolbar-bgcolor);
+    stroke: var(--toolbar-color);
+  }
+}
