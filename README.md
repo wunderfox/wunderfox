@@ -22,6 +22,7 @@ Project goals
 - Reconsider if Rust in Firefox is a good idea.
 - Wunderfox is maintained as a small altruistic open source project, it is not controlled by a search engine corporation like Google or Netscape.
 - Academic project to teach web users and software developers about web browsers.
+- Ideas and pull requests welcome! You can actually help improve the project.
 
 
 Project status
