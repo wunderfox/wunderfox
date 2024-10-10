@@ -16,9 +16,6 @@ ac_add_options CC=clang CXX=clang++
 # Enable link-time optimization (optional, improves performance but slower to build)
 ac_add_options --enable-lto
 
-# Disable telemetry and data collection to speed up builds
-ac_add_options --disable-telemetry
-
 # Disable tests to reduce build time (you can enable if testing is needed)
 ac_add_options --disable-tests
 
