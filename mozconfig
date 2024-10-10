@@ -21,7 +21,6 @@ ac_add_options --disable-tests
 
 # Use system libraries instead of downloading (optional)
 ac_add_options --with-system-zlib
-ac_add_options --with-system-bz2
 
 # Optional: Disable some features to speed up the build
 # Uncomment any of the following lines based on your preferences
