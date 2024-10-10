@@ -13,67 +13,66 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # Set environment variables for the build (update as needed)
+      # Set environment variables for the build
       CC: clang
       CXX: clang++
-      MOZCONFIG: mozconfig
+      MOZCONFIG: ${{ github.workspace }}/mozconfig
 
     steps:
-    - name: Checkout Source Code
-      uses: actions/checkout@v3
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
 
-    - name: Install Dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y \
-          autoconf2.13 \
-          build-essential \
-          clang \
-          cmake \
-          curl \
-          git \
-          libasound2-dev \
-          libcurl4-openssl-dev \
-          libgtk-3-dev \
-          libpulse-dev \
-          libssl-dev \
-          libx11-xcb-dev \
-          libxcb-glx0-dev \
-          libxcb-shm0-dev \
-          libxcb1-dev \
-          libxt-dev \
-          nodejs \
-          python3 \
-          python3-pip \
-          unzip \
-          zip
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            autoconf2.13 \
+            build-essential \
+            clang \
+            cmake \
+            curl \
+            git \
+            libasound2-dev \
+            libcurl4-openssl-dev \
+            libgtk-3-dev \
+            libpulse-dev \
+            libssl-dev \
+            libx11-xcb-dev \
+            libxcb-glx0-dev \
+            libxcb-shm0-dev \
+            libxcb1-dev \
+            libxt-dev \
+            nodejs \
+            python3 \
+            python3-pip \
+            unzip \
+            zip
 
-    - name: Set Up Python Environment
-      run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install virtualenv
+      - name: Set Up Python Environment
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install virtualenv
 
-    - name: Create Build Directory
-      run: mkdir objdir
+      - name: Create Build Directory
+        run: mkdir objdir
 
-    - name: Configure Build
-      run: |
-        cd objdir
-        ../mach configure
+      - name: Configure Build
+        run: |
+          cd objdir
+          ../mach configure
 
-    - name: Build Firefox
-      run: |
-        cd objdir
-        ../mach build
+      - name: Build Firefox
+        run: |
+          cd objdir
+          ../mach build
 
-    - name: Run Tests
-      run: |
-        cd objdir
-        ../mach test
+      - name: Run Tests
+        run: |
+          cd objdir
+          ../mach test
 
-    - name: Archive Build Artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: firefox-build
-        path: objdir/dist/
-
+      - name: Archive Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: firefox-build
+          path: objdir/dist/

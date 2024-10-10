@@ -1,0 +1,46 @@
+# Build configuration for Firefox
+
+# Set the build type to optimize the build for development
+ac_add_options --enable-debug
+
+# Enable compiling Firefox as a browser application
+ac_add_options --enable-application=browser
+
+# Specify the directory where the build artifacts will be stored
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/objdir-ff
+
+# Use clang for better performance and warnings
+ac_add_options --enable-clang-plugin
+ac_add_options CC=clang CXX=clang++
+
+# Enable link-time optimization (optional, improves performance but slower to build)
+ac_add_options --enable-lto
+
+# Disable telemetry and data collection to speed up builds
+ac_add_options --disable-telemetry
+
+# Disable tests to reduce build time (you can enable if testing is needed)
+ac_add_options --disable-tests
+
+# Use system libraries instead of downloading (optional)
+ac_add_options --with-system-zlib
+ac_add_options --with-system-bz2
+
+# Optional: Disable some features to speed up the build
+# Uncomment any of the following lines based on your preferences
+#ac_add_options --disable-webrtc          # Disable WebRTC
+#ac_add_options --disable-webspeech       # Disable Web Speech API
+#ac_add_options --disable-gamepad         # Disable Gamepad API
+#ac_add_options --disable-accessibility   # Disable accessibility support
+
+# Optional: Enable Profile-Guided Optimization (longer build time, better performance)
+#ac_add_options --enable-profile-guided-optimization
+
+# Optional: Add this if building for a headless environment
+#ac_add_options --enable-headless
+
+# Optional: Skip updating system certificates if building offline
+#ac_add_options --without-system-certdb
+
+
+
