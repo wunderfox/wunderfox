@@ -1,7 +1,7 @@
 Wunderfox - a web browser.
 =========================
 
-Wunderfox is a fork of Firefox.  Wunderfox is secure, fast and modern web browser. Wunderfox supports modern web standards such as HTML5. 
+Wunderfox is a fork of Firefox.  Wunderfox is secure and fast web browser. Wunderfox supports modern web standards such as HTML5. 
 
 Wunderfox is an open source project, with altruistic goals for making a good web browser. 
 
