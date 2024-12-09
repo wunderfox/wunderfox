@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 1 # Shallow clone to save disk space
 
       - name: Install Dependencies
         run: |
@@ -47,11 +49,14 @@ jobs:
             python3-pip \
             unzip \
             zip
+          sudo apt-get clean # Free up disk space
 
       - name: Set Up Python Environment
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install virtualenv
+        env:
+          PIP_CACHE_DIR: ${{ runner.temp }}/pip-cache # Use temp directory for pip cache
 
       - name: Create Build Directory
         run: mkdir objdir
@@ -60,19 +65,30 @@ jobs:
         run: |
           cd objdir
           ../mach configure
+        env:
+          MOZBUILD_STATE_PATH: ${{ runner.temp }}/mozbuild # Store state in temporary directory
 
       - name: Build Firefox
         run: |
           cd objdir
           ../mach build
+        env:
+          MOZBUILD_STATE_PATH: ${{ runner.temp }}/mozbuild
 
       - name: Run Tests
         run: |
           cd objdir
           ../mach test
+        env:
+          MOZBUILD_STATE_PATH: ${{ runner.temp }}/mozbuild
+
+      - name: Clean Up Build Directory
+        run: |
+          rm -rf objdir/.deps objdir/.mozbuild
 
       - name: Archive Build Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: firefox-build
           path: objdir/dist/
+          retention-days: 7 # Specify retention days to reduce storage time
