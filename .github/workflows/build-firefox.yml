@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout Source Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1 # Shallow clone to save disk space
 
@@ -87,7 +87,7 @@ jobs:
           rm -rf objdir/.deps objdir/.mozbuild
 
       - name: Archive Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: firefox-build
           path: objdir/dist/
