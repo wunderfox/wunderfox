@@ -24,44 +24,8 @@ jobs:
         with:
           fetch-depth: 1 # Shallow clone to save disk space
 
-      - name: Show disk before cleanup
-        run: df -h
 
-      # 1) Expand usable disk on the runner and add swap
-      - name: Maximize build disk space
-        uses: easimon/maximize-build-space@master
-        with:
-          root-reserve-mb: 1024            # keep 1 GB free for system
-          swap-size-mb: 4096               # add 4 GB swap to reduce OOM risk
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
-
-      # 2) Prune remaining large toolchains/caches
-      - name: Free additional disk space
-        uses: jlumbroso/free-disk-space@main
-        with:
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: true
-          tool-cache: true
-          swap-storage: true
-
-      - name: Extra manual pruning (belt & suspenders)
-        run: |
-          sudo rm -rf /usr/local/lib/android || true
-          sudo rm -rf /usr/share/dotnet || true
-          sudo rm -rf /opt/ghc || true
-          sudo rm -rf /opt/hostedtoolcache/CodeQL || true
-          sudo docker system prune -af --volumes || true
-          sudo apt-get clean || true
-          sudo rm -rf /var/lib/apt/lists/* || true
-
-      - name: Show disk after cleanup
+      - name: Show disk
         run: df -h
 
       - name: Install Dependencies
